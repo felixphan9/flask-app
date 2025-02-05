@@ -1,10 +1,9 @@
 from flask import Flask, render_template, flash, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'  # Required for CSRF
@@ -25,11 +24,18 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+class RegistrationForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    # Optional: Confirm password field to ensure the user types their password correctly.
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', 
+                                     validators=[DataRequired(), EqualTo('password', message='Passwords must match.')])
+    submit = SubmitField('Register')
 
 @app.route('/')
 def home():
@@ -43,9 +49,32 @@ def home():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        flash(f'Login requested for user {form.username.data}')
-        return redirect(url_for('home'))
+        # Retrieve user from the database
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and user.check_password(form.password.data):
+            flash(f'Login successful for user {form.username.data}', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid username or password.', 'danger')
     return render_template('login.html', form=form)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        # Check if username already exists
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            flash('Username already exists. Please choose a different one.', 'danger')
+        else:
+            new_user = User(username=form.username.data)
+            new_user.set_password(form.password.data)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Registration successful. You can now log in.', 'success')
+            return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
 @app.errorhandler(404)
 def page_not_found(e):
