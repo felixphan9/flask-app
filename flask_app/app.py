@@ -1,4 +1,6 @@
+import os
 from flask import Flask, render_template, flash, redirect, url_for
+from flask_mail import Mail, Message
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, EqualTo
@@ -9,7 +11,15 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'  # Required for CSRF
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Gmail SMTP server
+app.config['MAIL_PORT'] = 587  # Common port for SMTP
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')  # Your email 
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')  # Email password
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')  # Default sender for emails
 
+# Create a mail instance
+mail = Mail(app)
 # Creete a database instance
 db = SQLAlchemy(app)
 
@@ -75,6 +85,22 @@ def register():
             flash('Registration successful. You can now log in.', 'success')
             return redirect(url_for('login'))
     return render_template('register.html', form=form)
+
+# Route to send an email
+@app.route('/send_email')
+def send_email():
+    msg = Message(
+        subject="Test Email from Flask",
+        sender=app.config['MAIL_DEFAULT_SENDER'],
+        recipients=["phuc.phsn2001@gmail.com"],  # Recipient
+        body="Hello Phuc! This is a test email sent from Flask-Mail."
+    )
+    
+    try:
+        mail.send(msg)
+        return "✅ Email sent successfully!"
+    except Exception as e:
+        return f"❌ Error sending email: {e}"
 
 @app.errorhandler(404)
 def page_not_found(e):
