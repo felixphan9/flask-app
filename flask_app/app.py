@@ -3,7 +3,7 @@ from flask import Flask, render_template, flash, redirect, url_for
 from flask_mail import Mail, Message
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import DataRequired, EqualTo, Email
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -47,6 +47,10 @@ class RegistrationForm(FlaskForm):
                                      validators=[DataRequired(), EqualTo('password', message='Passwords must match.')])
     submit = SubmitField('Register')
 
+class EmailForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Send Email')
+
 @app.route('/')
 def home():
     user = {
@@ -87,20 +91,23 @@ def register():
     return render_template('register.html', form=form)
 
 # Route to send an email
-@app.route('/send_email')
-def send_email():
-    msg = Message(
-        subject="Test Email from Flask",
-        sender=app.config['MAIL_DEFAULT_SENDER'],
-        recipients=["phuc.phsn2001@gmail.com"],  # Recipient
-        body="Hello Phuc! This is a test email sent from Flask-Mail."
-    )
-    
-    try:
-        mail.send(msg)
-        return "✅ Email sent successfully!"
-    except Exception as e:
-        return f"❌ Error sending email: {e}"
+@app.route('/email', methods=['GET', 'POST'])
+def email():
+    form = EmailForm()
+    if form.validate_on_submit():
+        msg = Message(
+            subject="Test Email from Flask",
+            sender=app.config['MAIL_DEFAULT_SENDER'],
+            recipients=[form.email.data],  # Recipient
+            body="Hello! This is a test email sent from Flask-Mail."
+        )
+        try:
+            mail.send(msg)
+            flash('✅ Email sent successfully!', 'success')
+        except Exception as e:
+            flash(f'❌ An error occurred: {e}', 'danger')
+        return redirect(url_for('email'))
+    return render_template('email.html', form=form)
 
 @app.errorhandler(404)
 def page_not_found(e):
