@@ -1,10 +1,10 @@
-# config.py
-
 import os
 
 class Config:
-    SECRET_KEY = 'your-secret-key-here'  # Required for CSRF protection
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
+    SECRET_KEY = 'mysecretkey'  # Required for CSRF protection
+    # Set the absolute path to the database
+    DATABASE_PATH = os.path.join('/home/sonphuc/mylittlehobby/flask_app/app/instance', 'site.db')
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DATABASE_PATH}'  # Use SQLite with the new path
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
