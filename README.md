@@ -2,6 +2,34 @@
 
 A simple Flask web application that implements user authentication with SQLite database integration.
 
+# Project Structure
+flasky/
+├── app/
+│   ├── instance/
+│   │   └── site.db            # Database file (SQLite in this case)
+│   ├── templates/
+│   │   ├── 404.html           # 404 error page
+│   │   ├── email.html         # Email sending page
+│   │   ├── index.html         # Home page
+│   │   ├── login.html         # Login page
+│   │   └── register.html      # Registration page
+│   ├── static/                # Static assets like CSS/JS/Images
+│   ├── main/                  
+│   │   ├── __init__.py        # Initialize the main module
+│   │   └── client.py          # Client-related functionalities (API calls, etc.)
+│   ├── app.py                 # The main app file (Flask instance)
+│   ├── __init__.py            # Initialize the Flask app
+│   ├── email.py               # Email handling
+│   └── models.py              # Database models
+├── migrations/                # Folder for database migrations
+├── tests/                     # Unit tests
+│   ├── __init__.py
+│   └── test*.py               # Test cases
+├── requirements.txt           # List of project dependencies
+├── youdontexist               # Unknown file
+├── config.py                  # Configuration file
+└── flasky.py                  # File to run the app
+
 ## Installation
 
 Follow these steps to set up the application on your local machine:
