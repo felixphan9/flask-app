@@ -1,23 +1,7 @@
-import os
-from flask import Flask
-from flask_mail import Mail
-from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import FlaskForm
-from config import Config
+from flask import Blueprint
 
-# Initialize the Flask app
-app = Flask(__name__)
+main = Blueprint('main', __name__)
 
-# Apply configurations
-app.config.from_object(Config)
+# The modules should be imported after the blueprint object is created, in order to avoid errors due to circular dependencies.
+from . import views, errors
 
-# Initialize the extensions
-mail = Mail(app)
-db = SQLAlchemy(app)
-
-# Import parts of our application
-from main import routes, models
-
-# Return the app instance for use
-def create_app():
-    return app

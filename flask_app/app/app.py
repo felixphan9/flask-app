@@ -1,4 +1,3 @@
-import os
 from flask import Flask, render_template, flash, redirect, url_for
 from flask_mail import Mail, Message
 from flask_wtf import FlaskForm
