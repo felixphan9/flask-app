@@ -1,20 +1,17 @@
-from flask import Flask, render_template
-from flask_bootstrap import Bootstrap
+from flask import Flask
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
-from config import Config
-
+from config import config
 
 mail = Mail()
 db = SQLAlchemy()
 
-def create_app(config_name):
+def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config[config_name])
-    Config[config_name].init_app(app)
+    app.config.from_object(config)  # Use Config directly
     mail.init_app(app)
     db.init_app(app)
-    
+
     # Blueprint registration
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
