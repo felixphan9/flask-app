@@ -95,7 +95,7 @@ Start the Flask development server with:
 flask run
 ```
 
-## Useful Git Tips
+### Useful Git Tips
 
 Before cleaning your repository of untracked files or directories, perform a dry run to see what will be removed:
 
@@ -106,3 +106,5 @@ If the output is as expected, remove the untracked files and directories with:
 ```bash
 git clean -f -d
 ```
+
+Credits: most of this I got from Flask Web Development Developing Web Applications With Python from Miguel Grinberg published by O'Reilly

@@ -6,8 +6,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = 'mysecretkey'  # Required for CSRF protection
     # Set the absolute path to the database
-    DATABASE_PATH = os.path.join('/home/sonphuc/mylittlehobby/flask_app/app/instance', 'site.db')
-    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DATABASE_PATH}'  # Use SQLite with the new path
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
@@ -21,20 +19,24 @@ class Config:
     def init_app(app):
         pass  # Add initialization logic for any global app settings here, if needed.
 
-# class DevelopmentConfig(Config):
-#     DEBUG = True
-#     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-#         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+class DevelopmentConfig(Config):
+    DEBUG = True
+    DATABASE_PATH = os.path.join('/home/sonphuc/mylittlehobby/flask_app/app/instance', 'site.db')
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DATABASE_PATH}'  # Use SQLite with the new path
 
-# class TestingConfig(Config):
-#     TESTING = True
-#     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
-#         'sqlite://'
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"  # Use an in-memory database for fast testing
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # class ProductionConfig(Config):
 #     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
 #         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
 # Configuration dictionary to map environment names to configuration classes
-
-config = Config
+config = {
+'development': DevelopmentConfig,
+'testing': TestingConfig,
+# 'production': ProductionConfig,
+# 'default': DevelopmentConfig
+}

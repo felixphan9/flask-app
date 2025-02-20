@@ -5,10 +5,10 @@ from config import config
 
 mail = Mail()
 db = SQLAlchemy()
-
-def create_app():
+# This is a factory function that creates a new Flask instance when called. aka app factory
+def create_app(config_name):
     app = Flask(__name__)
-    app.config.from_object(config)  # Use Config directly
+    app.config.from_object(config.get(config_name, config['development']))  # Default to 'development' if not specified
     mail.init_app(app)
     db.init_app(app)
 
