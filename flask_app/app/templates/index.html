@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>Homepage</title>
 </head>
 <body>
-    <h1>Welcome, {{ user.name }}</h1>
-    <p>Your role is {{ user.role }}</p>
+    {%if current_user.is_authenticated%}
+    <h1>Welcome, {{ current_user.username }}</h1>
+    {% else %}
+    <h1>Welcome, Guest</h1>
+    {%endif%}
+    <a href="{{ url_for('auth.logout') }}">Logout</a>
 </body>
 </html>

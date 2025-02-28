@@ -6,27 +6,11 @@ from . import main
 from ..models import User
 from . import main
 from .forms import EmailForm
+from flask_login import current_user
 
 @main.route('/')
 def home():
-    user = {"name": "Fukku", "role": "Developer"}
-    return render_template('index.html', user=user)
-
-@main.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            flash('Username already exists. Please choose a different one.', 'danger')
-        else:
-            new_user = User(username=form.username.data)
-            new_user.set_password(form.password.data)
-            db.session.add(new_user)
-            db.session.commit()
-            flash('Registration successful. You can now log in.', 'success')
-            return redirect(url_for('views.login'))
-    return render_template('register.html', form=form)
+    return render_template('index.html', user=current_user)
 
 @main.route('/email', methods=['GET', 'POST'])
 def email():

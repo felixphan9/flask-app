@@ -8,3 +8,5 @@ email-validator==2.1.0.post1
 python-dotenv==1.0.0
 flask-mail==0.10.0
 flask-login-0.6.3
+flask-migrate==4.1.0
+email-validator-2.2.0

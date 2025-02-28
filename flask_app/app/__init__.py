@@ -3,6 +3,7 @@ from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from config import config
 from flask_login import LoginManager
+from flask_migrate import Migrate   # Import the Migrate class from the flask_migrate module
 
 mail = Mail() # Create an instance of the Mail class
 db = SQLAlchemy() # Create an instance of the SQLAlchemy class
@@ -17,7 +18,8 @@ def create_app(config_name):
     mail.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-
+    migrate = Migrate(app, db)  # Create an instance of the Migrate class
+    
     # Blueprint registration
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)

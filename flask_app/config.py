@@ -1,4 +1,5 @@
 import os
+from flask_migrate import Migrate
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 # Define a base configuration class
