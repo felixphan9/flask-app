@@ -4,34 +4,37 @@ A simple Flask web application that implements user authentication with SQLite d
 
 # Project Structure
 flasky/
-├── app/
-│   ├── instance/
-│   │   └── site.db            # SQLite database file
-│   ├── templates/
-│   │   ├── 404.html           # Custom 404 error page
-│   │   ├── email.html         # Email sending page
-│   │   ├── index.html         # Home page
-│   │   ├── login.html         # Login page
-│   │   └── register.html      # Registration page
-│   ├── static/                # Static assets (CSS, JavaScript, images)
-│   ├── main/
-│   │   ├── __init__.py        # Initializes the main module (blueprint)
-│   │   ├── client.py          # Client-related functionalities (API calls, etc.)
-│   │   ├── errors.py          # Error handlers for the main module
-│   │   ├── forms.py           # Form definitions
-│   │   └── views.py           # View functions for the main module
-│   ├── app.py                 # Main app file (creates the Flask instance)
-│   ├── __init__.py            # Application factory and initialization
-│   ├── email.py               # Email handling logic
-│   └── models.py              # Database models
-├── migrations/                # Database migration scripts
-├── tests/                     # Unit tests
-│   ├── __init__.py
-│   └── test*.py               # Test cases
-├── requirements.txt           # Project dependencies
-├── youdontexist               # Unspecified file (check if needed)
-├── config.py                  # Application configuration settings
-└── flasky.py                  # Application entry point
+| app/
+|   | auth/
+|   |   __init__.py
+|   |   forms.py
+|   |   views.py
+│   | instance/
+│   │       site.db            # SQLite database file
+│   | templates/
+│   │       404.html           # Custom 404 error page
+│   │       email.html         # Email sending page
+│   │       index.html         # Home page
+│   │       login.html         # Login page
+│   │       register.html      # Registration page
+│   | main/
+│   │       __init__.py        # Initializes the main module (blueprint)
+│   │       client.py          # Client-related functionalities (API calls, etc.)
+│   │       errors.py          # Error handlers for the main module
+│   │       forms.py           # Form definitions
+│   │       views.py           # View functions for the main module
+│   | app.py                 # Main app file (creates the Flask instance)
+│   | __init__.py            # Application factory and initialization
+│   | email.py               # Email handling logic
+│   | models.py              # Database models
+| migrations/                # Database migration scripts
+| tests/                     # Unit tests
+│   |   __init__.py
+│   |   test*.py              # Test cases
+|   requirements.txt           # Project dependencies
+|   youdontexist               # Unspecified file (check if needed)
+|   config.py                  # Application configuration settings
+|   flasky.py                  # Application entry point
 
 
 ## Installation

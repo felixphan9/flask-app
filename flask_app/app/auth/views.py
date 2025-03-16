@@ -1,10 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, login_required, logout_user
 from . import auth
-<<<<<<< HEAD
-=======
 from flask_login import current_user
->>>>>>> If you are not confirmed, you are not allowed :)
 from ..models import User
 from .forms import LoginForm, RegistrationForm
 from .. import db
@@ -12,8 +9,6 @@ from flask_mail import Message
 from flask import current_app
 from app import mail
 
-<<<<<<< HEAD
-=======
 @auth.before_app_request
 def before_request():
     '''This handler will intercept a request when three conditions are met:
@@ -25,7 +20,6 @@ def before_request():
             and request.blueprint != 'auth' and request.endpoint != 'static':
         return redirect(url_for('auth.unconfirmed'))
     
->>>>>>> If you are not confirmed, you are not allowed :)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -101,9 +95,6 @@ def confirm_email(token):
 def logout():
     logout_user()
     flash('You have been logged out.')
-<<<<<<< HEAD
-    return redirect(url_for('main.home'))
-=======
     return redirect(url_for('main.home'))
 
 @auth.route('/resend_confirmation')
@@ -133,4 +124,3 @@ def unconfirmed():
         return redirect(url_for('main.home'))
     
     return render_template('auth/unconfirmed.html')
->>>>>>> If you are not confirmed, you are not allowed :)
