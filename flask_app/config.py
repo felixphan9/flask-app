@@ -14,6 +14,7 @@ class Config:
     MAIL_USERNAME = os.getenv('MAIL_USERNAME')  # Use environment variables for security
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
+    FLASKY_ADMIN = os.getenv('FLASKY_ADMIN')
     DEBUG = True
 
     @staticmethod

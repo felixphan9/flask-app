@@ -71,8 +71,8 @@ export MAIL_USERNAME='your-email@example.com'
 export MAIL_PASSWORD='your-email-password'
 # Generate your MAIL_PASSWORD using two-step verification and app passwords on Google Account
 # Example: 'slgd fjzh erbx iynf'
-
 export MAIL_DEFAULT_SENDER='your-default-sender-email@example.com'
+export FLASKY_ADMIN='your-admin-email'
 ```
 
 Notes:
