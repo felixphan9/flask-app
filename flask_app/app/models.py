@@ -5,6 +5,7 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 from itsdangerous import BadSignature, SignatureExpired
 from flask_login import UserMixin, AnonymousUserMixin
 from flask import current_app
+from datetime import datetime
 
 class Permission:
     """Permissions for user roles"""
@@ -77,7 +78,12 @@ class User(db.Model, UserMixin):
     confirmed_on = db.Column(db.DateTime, nullable=True)  # Optional: When the confirmation occurred
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))  # Role ID (Foreign Key)
     role = db.relationship('Role', back_populates='users')  # Relationship with Role model
-    
+    name = db.Column(db.String(80), nullable=True)  # Optional: Full name
+    location = db.Column(db.String(80), nullable=True)  # Optional: Location
+    about_me = db.Column(db.Text(), nullable=True)  # Optional: About me
+    member_since = db.Column(db.DateTime(), default=datetime.utcnow)  # Member since
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)  # Last seen
+
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
@@ -87,6 +93,12 @@ class User(db.Model, UserMixin):
             # If no role is found, assign the default role
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
+
+    def ping(self):
+        """Update the last seen time."""
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
+        db.session.commit()
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

@@ -26,3 +26,11 @@ def for_admins_only():
 @permission_required(Permission.MODERATE)
 def for_moderators_only():
         return "For comment moderators!"
+
+@main.route('/user/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    print(user.name)  # Should print the name, or None if it's not set
+    print(user.location)  # Should print the location, or None if it's not set
+    print(user.about_me)  # Should print the about_me, or None if it's not set
+    return render_template('user.html', user=user)

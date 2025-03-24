@@ -16,6 +16,11 @@ def before_request():
     2. The user is authenticated (logged in).
     3. The user has not confirmed their account yet.
     If these conditions are met, the user is redirected to the unconfirmed page.'''  
+    # Ping the current user to perform session management or any necessary checks
+    if current_user.is_authenticated:
+        current_user.ping()  # Ensure the user session is valid (if your app uses this method)
+
+    # Check if the user is authenticated, unconfirmed, and not accessing static or auth routes
     if current_user.is_authenticated and not current_user.confirmed \
             and request.blueprint != 'auth' and request.endpoint != 'static':
         return redirect(url_for('auth.unconfirmed'))

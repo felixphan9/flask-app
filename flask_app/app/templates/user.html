@@ -1,0 +1,45 @@
+{% block page_content %}
+    <div class="page-header">
+        <h1 class="username">{{ user.username }}</h1>
+
+        {% if user.name or user.location %}
+            <div class="user-info">
+                {% if user.name %}
+                    <p><strong>Name:</strong> {{ user.name }}</p>
+                {% endif %}
+
+                {% if user.location %}
+                    <p><strong>Location:</strong> 
+                        <a href="http://maps.google.com/?q={{ user.location }}" target="_blank" class="location-link">{{ user.location }}</a>
+                    </p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if current_user.is_administrator() %}
+            <div class="admin-info">
+                <p><strong>Email:</strong> <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+            </div>
+        {% endif %}
+
+        {% if user.about_me %}
+            <div class="about-me">
+                <p><strong>About Me:</strong> {{ user.about_me }}</p>
+            </div>
+        {% endif %}
+
+        <div class="member-info">
+            <p>
+                {% if user.member_since %}
+                    <strong>Member Since:</strong> {{ user.member_since.strftime('%B %d, %Y') }}
+                {% else %}
+                    <strong>Member Since:</strong> Not Available
+                {% endif %}
+            </p>
+            <p>
+                <strong>Last Seen:</strong> {{ user.last_seen.strftime('%B %d, %Y') }}
+            </p>
+        </div>
+    </div>
+
+{% endblock %}
